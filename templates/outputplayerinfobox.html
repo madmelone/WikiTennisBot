@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set active_page = "playerinfobox" %}
+
+{% block content %}
+    <div class="home">
+        <h2>Player Infobox Results</h2>
+    </div>
+    <div>
+        Result:
+    </div>
+    <div>
+        Your request has been saved via <a href="{{ savedurl | safe }}" target="_blank">{{ savedurl | safe }}</a>
+    </div>
+
+{% endblock %}
