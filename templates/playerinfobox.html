@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% set active_page = "playerinfobox" %}
+
+{% block content %}
+  <div class="home">
+    <h2>Player Infobox</h2>
+  </div>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+      <div class="form-group row">
+        <label class="col-sm-2 form-control-label">{{ form.action.label }}</label>
+        <div class="col-sm-4">{{ form.action }}</div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 form-control-label">{{ form.playerid.label }}</label>
+        <div class="col-sm-4">{{ form.playerid }}</div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 form-control-label">{{ form.org.label }}</label>
+        <div class="col-sm-4">{{ form.org }}</div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 form-control-label">{{ form.language.label }}</label>
+        <div class="col-sm-4">{{ form.language }}</div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 form-control-label">{{ form.site.label }}</label>
+        <div class="col-sm-4">{{ form.site }}</div>
+      </div>
+      <div class="col-sm-2">
+        {{ form.submit() }}
+      </div>
+    </form>
+{% endblock %}
