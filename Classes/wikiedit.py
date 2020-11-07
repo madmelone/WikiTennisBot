@@ -18,6 +18,7 @@ class Wikicode(object):
         # Self method
         # action    = action used to edit, includes createInfoxbox, updateInfobox
         # playerid  = identifier used by the respective org on their website to identify players
+        # org       = professional tennis organisation, includes atp, wta, itf
         # language  = wikipedia language code for the site to be edited
         # site      = wikipedia site to be edit, includes wikipedia, wikidata
         self.__action = action
