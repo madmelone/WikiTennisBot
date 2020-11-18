@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Name:     ITF property change
 # Author:   Mad_melone (https://w.wiki/gDR)
 # Date:     07-11-2020
@@ -13,7 +14,6 @@ import os
 
 class ITFProperty(object):
     # Object that contains and edits ITF player information
-
     def __init__(self, action="test"):
         # Self method
         self.__action = action
@@ -121,34 +121,44 @@ class ITFProperty(object):
         with open("items.txt") as item_file:
             item_data = json.load(item_file)
             for i in item_data:
+                print(i + " - " + item_data[i]["item"])
                 item = pywikibot.ItemPage(repo, item_data[i]["item"])
                 item.get()
+                # Bug fix: remove trailing "/"
+                if item_data[i]["itf_new"][-1:] == "/":
+                    item_data[i]["itf_new"] = item_data[i]["itf_new"][:-1]
                 if item.claims:
-                    if "P599" in item.claims:
-                        if item_data[i]["itf_old"] == item.claims["P599"][0].getTarget():
-                            # Set P599 statement deprecated if already set
-                            # to implement
-                            log.append(item_data[i]["item"] + " - deprecate P599")
+                    #if "P599" in item.claims:
+                    #    if item_data[i]["itf_old"] == item.claims["P599"][0].getTarget():
+                    #        # Set P599 statement deprecated if not already
+                    #        claim = pywikibot.Claim(repo, "P599")
+                    #        if not claim.getRank() == "deprecated":
+                    #            print(claim.getRank())
+                    #            claim.changeRank("deprecated")
+                    #            log.append("{{Q|" + item_data[i]["item"][1:] + "}} - deprecate P599")
+                    #        else:
+                    #            log.append("{{Q|" + item_data[i]["item"][1:] + "}} - no deprecate P599")
                     if not "P8618" in item.claims:
                         # Add new P8618 statement if not already available
-                        log.append(item_data[i]["item"] + " - add P8618")
                         claim = pywikibot.Claim(repo, "P8618")
                         target = item_data[i]["itf_new"]
                         claim.setTarget(target)
                         item.addClaim(claim, summary="Add ITF Player ID 2020 (P8618)")
+                        log.append("{{Q|" + item_data[i]["item"][1:] + "}} - add P8618")
                     else:
                         if item.claims["P8618"][0].getTarget() != item_data[i]["itf_new"]:
                             # Update P8618 statement if not the same as from web scraping
                             # 1) Delete existing statements 2) Add new statement
-                            log.append(item_data[i]["item"] + " - update P8618")
                             for claim in item.claims["P8618"]:
                                 item.removeClaims(claim, summary="Removing incorrect ITF Player ID 2020 (P8618)")
                             claim = pywikibot.Claim(repo, "P8618")
                             target = item_data[i]["itf_new"]
                             claim.setTarget(target)
                             item.addClaim(claim, summary="Update ITF Player ID 2020 (P8618)")
+                            log.append("{{Q|" + item_data[i]["item"][1:] + "}} - update P8618")
                         else:
-                            log.append(item_data[i]["item"] + " - no update P8618")
+                            pass
+                            #log.append("{{Q|" + item_data[i]["item"][1:] + "}} - no update P8618")
         # Write log
         self.__botuser = "User:" + wiki.user()
         instance = str(self.__now) + " ITF Property Change"
@@ -163,12 +173,6 @@ class ITFProperty(object):
         text = "* [[User:WikiTennisBot/log/" + instance + "]] \n" + page.get()
         page.text = str(text)
         page.save("Log update by " + wiki.user())
-
-                    #print(item.claims["P599"][0].getTarget())
-                    #print(item_data[i]["itf_old"])
-                    #print(item.claims["P8618"][0].getTarget())
-                    #print(item_data[i]["itf_new"])
-
 
     # Access of private variables
     itemlist = property(getItems)
